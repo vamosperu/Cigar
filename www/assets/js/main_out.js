@@ -8,6 +8,15 @@
     Array.prototype.peek = function() {
         return this[this.length - 1];
     };
+	// here u can add more hats 
+	var hats = {
+		crown: new Image(),
+		santa: new Image(),
+		elf: new Image()
+	}
+	hats.crown.src = "http://i.imgur.com/ADozPZ6.png";
+	hats.elf.src = "http://i.imgur.com/dM0uxZE.png";
+	hats.santa.src = "http://i.imgur.com/dM0uxZE.png";	
     var CONNECT_TO,
         SKIN_URL = "./skins/",
         USE_HTTPS = "https:" == wHandle.location.protocol,
@@ -1165,7 +1174,7 @@
         return _viewMult;
     }
 
-    function Cell(id, x, y, size, name, color, skin, time, flags) {
+    function Cell(id, x, y, size, name, color, skin, time, flags, extras) {
         this.id = id;
         this.x = this.nx = x;
         this.y = this.ny = y;
@@ -1173,6 +1182,7 @@
         this.setName(name);
         this.setColor(color);
         this.skin = skin;
+	this.extras = extras;    
         if (flags) {
             this.isEjected = !!(flags & 0x20);
             this.isVirus = !!(flags & 0x01);
@@ -1432,6 +1442,17 @@
 					mainCtx.restore();
                 }
             }
+		if (!this.extras && this.name.indexOf("santa") > -1) this.extras = "santa";
+			if (!this.extras && this.name.indexOf("rd") > -1) this.extras = "rd";
+			if (!this.extras && this.name.indexOf("crown") > -1) this.extras = "crown";
+			if (!this.extras && this.name.indexOf("ireal") > -1) this.extras = "ireal";
+			if (this.extras && this.size > 55) {
+				if (!hats[this.extras]) return;
+				mainCtx.save();
+				mainCtx.globalAlpha = .9;
+				mainCtx.drawImage(hats[this.extras], this.x - this.size, this.y - this.size - this.size * 1.66, 2 * this.size, 2 * this.size);
+				mainCtx.restore();
+			}
         }
     };
 
